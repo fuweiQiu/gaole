@@ -1,0 +1,67 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                hello
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                world
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button id="addone">Add one</button>
+
+<script>
+    $(document).ready(function(){
+        $('#addone').click(function(){
+            let container = document.createElement('div');
+            container.classList.add('modal');
+            container.classList.add('fade');
+            container.tabIndex = -1;
+            container.ariaHidden = true;
+            let dialog = document.createElement('div');
+            dialog.classList.add('modal-dialog');
+            dialog.classList.add('modal-dialog-scrollable');
+            let content = document.createElement('div');
+            content.classList.add('modal-content');
+            let header = document.createElement('div');
+            header.classList.add('modal-header');
+            let title = document.createElement('h5');
+            title.textContent = 'hello world';
+            let btn = document.createElement('button');
+            btn.classList.add('btn');
+            btn.classList.add('close')
+            btn.classList.add('btn-danger');
+            header.appendChild(title);header.appendChild(btn);
+            let body = document.createElement('div');
+            body.innerHTML = '<table class="table ta"><tr><td>1</td><td>s3凱路迪歐</td><td>s1小卡比獸</td></tr><tr><td>2</td><td>s1拉魯拉絲</td><td>雷公W</td></tr><tr><td>3</td><td>s2穿著熊</td><td>s2穿著熊</td></tr><tr><td>4</td><td>s1洛托姆</td><td>s4畢力吉翁</td></tr><tr><td>5</td><td>s2嗡蝠</td><td>s1呆呆獸</td></tr><tr><td>6</td><td>s3月石</td><td>s1童偶熊</td></tr><tr><td>7</td><td>s1呆呆獸</td><td>s2奇魯莉安</td></tr><tr><td>8</td><td>s1阿羅拉六尾</td><td>s2奇魯莉安</td></tr><tr><td>9</td><td>s2金屬怪</td><td>s4水箭龜</td></tr><tr><td>10</td><td>s3沙奈朵</td><td>s2烈焰馬</td></tr><tr><td>11</td><td>金-代歐奇西斯</td><td>s4噴火龍</td></tr><tr><td>12</td><td>s4代拉基翁</td><td>s4代拉基翁</td></tr><tr><td>13</td><td>s1童偶熊</td><td>s3巨金怪</td></tr><tr><td>14</td><td>s3卡比獸</td><td>s1呆呆獸</td></tr><tr><td>15</td><td>s1鐵啞鈴</td><td>s2阿羅拉九尾</td></tr><tr><td>16</td><td>s4太陽岩</td><td>s1阿羅拉六尾</td></tr><tr><td>17</td><td>s3阿羅拉九尾</td><td>s2金屬怪</td></tr><tr><td>18</td><td>s2嗡蝠</td><td>s2嗡蝠</td></tr><tr><td>19</td><td>s1鐵啞鈴</td><td>s1利歐路</td></tr><tr><td>20</td><td>s2瓦斯彈</td><td>s3太陽岩</td></tr><tr><td>21</td><td>s4土地雲</td><td>s4沙奈朵</td></tr><tr><td>22</td><td>炎帝W</td><td>金-s4瑪納霏</td></tr><tr><td>23</td><td>s4巨金怪</td><td>s1嗡蝠</td></tr><tr><td>24</td><td>s2阿羅拉九尾</td><td>s4路卡利歐</td></tr><tr><td>25</td><td>s3穿著熊</td><td>s1小火馬</td></tr><tr><td>26</td><td>s2路卡利歐</td><td>s1嗡蝠</td></tr><tr><td>27</td><td>s2阿羅拉九尾</td><td>阿爾宙斯(火)</td></tr><tr><td>28</td><td>s2小卡比獸</td><td>s4勾帕路翁</td></tr><tr><td>29</td><td>金-s4美洛耶塔</td><td>s2呆殼獸</td></tr><tr><td>30</td><td>s2洛托姆</td><td>s3路卡利歐</td></tr><tr><td>31</td><td>s1童偶熊</td><td>s2嗡蝠</td></tr><tr><td>32</td><td>s2烏鴉頭頭</td><td>s1黑暗鴉</td></tr><tr><td>33</td><td>s1利歐路</td><td>s1洛托姆</td></tr><tr><td>34</td><td>s4凱路迪歐</td><td>s2瓦斯彈</td></tr><tr><td>35</td><td>s2瓦斯彈</td><td>s2路卡利歐</td></tr><tr><td>36</td><td>s1小火馬</td><td>s3皮卡丘</td></tr><tr><td>37</td><td>金-黃昏之鬃z</td><td>s1小卡比獸</td></tr><tr><td>38</td><td>s2呆殼獸</td><td>s3破破舵輪</td></tr><tr><td>39</td><td>s3巨金怪</td><td>s3阿羅拉九尾</td></tr><tr><td>40</td><td>s2奇魯莉安</td><td>s2小卡比獸</td></tr><tr><td>41</td><td>s2烈焰馬</td><td>s2洛托姆</td></tr><tr><td>42</td><td>s1黑暗鴉</td><td>s3音波龍</td></tr><tr><td>43</td><td>s2穿著熊</td><td>s2小卡比獸</td></tr><tr><td>44</td><td>s4音波龍</td><td>s3洛托姆</td></tr><tr><td>45</td><td>s3呆呆王</td><td>s3烈焰馬</td></tr><tr><td>46</td><td>金-s4妙蛙花</td><td>s4巨金怪</td></tr><tr><td>47</td><td>s1洛托姆</td><td>金-超夢</td></tr><tr><td>48</td><td>s1小卡比獸</td><td>s1鐵啞鈴</td></tr><tr><td>49</td><td>s1嗡蝠</td><td>s1拉魯拉絲</td></tr><tr><td>50</td><td>金-s4水箭龜</td><td>s2烏鴉頭頭</td></tr></table>';
+            content.appendChild(header);content.appendChild(body);
+            dialog.appendChild(content);
+            container.appendChild(dialog);
+            document.body.appendChild(container);
+            let modal = new bootstrap.Modal(container);
+            modal.show();
+        })
+    })
+</script>

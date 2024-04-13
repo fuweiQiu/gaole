@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ga-Olé 計算機</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+    <style>
+        .gold_card {
+            background-color: var(--bs-yellow);
+        }
+        .bg-orange{
+            background-color: var(--orange);
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+
+            let data;
+
+            let allpokemon;
+            function init(i = 1) {
+                $.ajax({
+                    url: 'all.php',
+                    dataType: 'json',
+                    success: result => {
+                        allpokemon = result
+                    }
+                })
+            }
+            init()
+            $(document).on('change', '.selstar', function () {
+                let star = $(this).val();
+                let selpoke = $(this).parent().find('.selpoke');
+                selpoke.html('');
+                for (let i = 0; i < allpokemon['name'].length; i++) {
+                    if (allpokemon['star'][i] == star) {
+                        selpoke.last().append(`<option>${allpokemon['name'][i]}</option>`);
+                    }
+                }
+            })
+            $('#add').click(function () {
+                $('.action').last().append(`
+                    <div class="form-group row mt-3">
+                        <select id="" class="selstar form-control col" name="selstar">
+                            <option value="none" selected disabled hidden>請選擇星星⭐️</option> 
+                            <option value="3">三星</option>
+                            <option value="4">四星</option>
+                            <option value="5">五星</option>
+                        </select>
+                        <select id="" class="form-control col selpoke" name="selpoke">
+                            <option value="">⬅️選擇星數</option>
+                        </select>
+                    </div>`)
+            })
+            $('#del').click(function () {
+                $('.action .form-group').last().remove();
+            })
+
+            $('#calc').click(function () {
+                data = new Array();
+                let dataarea = $('.action .form-group');
+                for (let i = 0; i < dataarea.length; i++) {
+                    let subdata = new Object();
+                    subdata.star = dataarea.eq(i).find('.selstar').val();
+                    subdata.pokemon = dataarea.eq(i).find('.selpoke').val();
+                    data.push(subdata);
+                }
+                $.ajax({
+                    url: 'search2.php',
+                    method: 'POST',
+                    dataType: 'json',
+                    data: {
+                        data: data,
+                    },
+                    success: r => {
+                        console.log('成功')
+                        console.log(r);
+                        $('#result').html('');
+                        if (r.length == 0) {
+                            $('#result').append('<img src="dead.gif" class="text-center" width="200" /><br><h5>找不到欸 或者我現在猜不出來(┬┬﹏┬┬)</h5>')
+                        } else {
+                            $('#result').last().append('<div class="col-12 justify-content-center text-center"><h5>可能是</h5></div>')
+                            for (let set of r) {
+                                $('#result').last().append('<div class="col-6 form-group"></div>');
+                                $('#result div').last().append(`<button class="gates btn btn-outline-primary w-100" g1="${set[0]}" g2="${set[1]}">${set[0]}條跟${set[1]}條</button>`);
+
+                            }
+                        }
+                    },
+                    error: err => {
+                        console.log('錯誤')
+                        console.log(err);
+                    }
+                })
+            })
+            
+            function createTable(g1, g2){
+                let table = document.createElement('table');
+                table.classList.add('table');
+                table.classList.add('ta');
+                $.ajax({
+                    url: 'maketable.php',
+                    data: {
+                        g1: g1,
+                        g2: g2
+                    },
+                    dataType: 'json',
+                    method: 'POST',
+                    success: result => {
+                        console.log(data);
+                        for(let i = 0; i < 50; i++){
+                            
+                            let tr = document.createElement('tr');
+                            let td0 = document.createElement('td');
+                            td0.textContent = (i + 1).toString();
+                            let td1 = document.createElement('td');
+                            td1. textContent = result['g1'][i];
+
+                            data.forEach(pokedata => {
+                                if (pokedata.pokemon == result['g1'][i]) {
+                                    td1.classList.add('bg-orange');
+                                }
+                            });
+
+                            let td2 = document.createElement('td');
+                            td2.textContent = result['g2'][i];
+                            data.forEach(pokedata => {
+                                if (pokedata.pokemon == result['g2'][i]) {
+                                    td2.classList.add('bg-orange');
+                                }
+                            });
+                            tr.appendChild(td0);
+                            tr.appendChild(td1);
+                            tr.appendChild(td2);
+                            table.appendChild(tr);
+                        }
+                    }
+                })
+                return table;
+            }
+
+
+            $(document).on('click', '#result .gates', function () {
+                let g1 = $(this).attr('g1');
+                let g2 = $(this).attr('g2');
+                // modal -> dialog -> content -> header & body & footer
+                let modal = document.createElement('div');
+                modal.classList.add('modal');
+                modal.tabIndex = -1;
+                modal.ariaHidden = true;
+                let dialog = document.createElement('div');
+                dialog.classList.add('modal-dialog');
+                dialog.classList.add('modal-dialog-scrollable');
+                let content = document.createElement('div');
+                content.classList.add('modal-content');
+                let header = document.createElement('div');
+                header.classList.add('modal-header');
+                let title = document.createElement('h5');
+                title.textContent = `${g1}條跟${g2}條`;
+                
+                let btnclose = document.createElement('button');
+                btnclose.classList.add('btn'); btnclose.classList.add('btn-danger');btnclose.textContent = '關閉';
+                btnclose.addEventListener('click', function(){
+                    Modal.hide();
+                })
+                
+                header.appendChild(title);
+                header.appendChild(btnclose);
+
+                content.appendChild(header);
+                let body = document.createElement('div');body.classList.add('modal-body');
+                $(body).css('min-height', '1000px');
+                let table = createTable(g1, g2);
+                body.appendChild(table);
+                content.appendChild(body);
+                dialog.appendChild(content);
+                modal.appendChild(dialog);
+                document.body.appendChild(modal);
+                let Modal = new bootstrap.Modal(modal);
+                Modal.show()
+            })
+            
+        })
+    </script>
+</head>
+
+<body style="padding-top: 100px;">
+    <!-- <nav class="navbar navbar-expand-lg navbar-light fixed-top p-3" style="background-color: #e3f2fd;">
+        <a class="navbar-brand" href="#">Ga-Olé 計算機</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03"
+            aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor03">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">計算機</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="List.html">卡序表</a>
+                </li>
+            </ul>
+        </div>
+    </nav> -->
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top p-3" style="background-color: #e3f2fd;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Ga-Olé 計算機</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="index.html">計算機</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="List.html">卡序表</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container" style="padding-bottom: 100px;;">
+        <div class="row">
+            <div class="col">
+                <div class="action">
+                    <!-- one module -->
+                    <div class="form-group row mt-3">
+                        <select class="selstar form-control col" name="selstar">
+                            <option value="none" selected disabled hidden>請選擇星星⭐️</option>
+                            <option value="3">三星</option>
+                            <option value="4">四星</option>
+                            <option value="5">五星</option>
+                        </select>
+                        <select id="" class="form-control col selpoke" name="selpoke">
+                            <option value="">⬅️選擇星數</option>
+                        </select>
+                    </div>
+                    <!-- one module -->
+                </div>
+
+                <div class="row mt-5">
+                    <div class="col form-group">
+                        <input type="button" class="btn btn-outline-primary w-100" value="新增一個篩選" id="add">
+                    </div>
+                    <div class="col form-group">
+                        <input type="reset" value="刪除最後一個" class="btn btn-danger w-100" id="del">
+                    </div>
+                    <div class="col">
+                        <input type="button" name="calc" id="calc" value="開始計算" class="btn btn-primary w-100">
+                    </div>
+                </div>
+                <div class="row mt-5 text-center justify-content-center" id="result">
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="container-fluid bg-dark pt-2 pb-2" style="position: fixed; bottom: 0;font-size: 10px;">
+        <div class="row justify-content-center">
+            <span class="bg-danger text-light p-1">請注意 預測結果並非絕對正確 請勿過度信任</span>
+        </div>
+        <div class="row justify-content-center">
+            <span class="col text-center text-light">
+                小星星好帥
+            </span>
+        </div>
+    </div>
+</body>
+
+</html>
